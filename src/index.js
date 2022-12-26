@@ -45,13 +45,22 @@ app.get("/", function (req, res) {
 const PORT = process.env.PORT || 5555;
 
 app.get("/extract", async (req, res) => {
-  const urls = await extracUrls(req.query.url, req.query.name);
-  return res.send(`
+  try {
+    const urls = await extracUrls(req.query.url, req.query.name);
+    return res.send(`
     <pre>
   ${urls.join("\n \n")}
     </pre>
     
     `);
+  } catch (e) {
+    return res.send(`
+    <pre>
+  not found or error
+    </pre>
+    
+    `);
+  }
 });
 const server = app.listen(PORT, function () {
   console.log("Example app listening at http://%s:%s", PORT);
